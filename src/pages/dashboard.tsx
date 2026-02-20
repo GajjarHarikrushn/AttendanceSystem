@@ -7,33 +7,32 @@ import "./dashboard.css"
 
 function Dashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
 
-  const [role, setRole] = useState<string | null>(null)
-  const [name, setName] = useState<Array<string>>([])
+  const [person, setPerson] = useState<any>(null) // person will contain firstName, lastName, email, role
 
   useEffect(() => {
-    async function fetchRole() {
+    async function fetchProfile() {
+      if (!user?.uid) return
       const snapshot = await get(ref(db, `users/${user.uid}`))
       const data = snapshot.val()
-      setRole(data?.role || "user")
-      setName([data?.firstName || "", data?.lastName || ""])
+      if (data) setPerson(data)
     }
 
-    if (user?.uid) {
-      fetchRole()
-    }
+    fetchProfile()
   }, [user])
 
-  if (!role) return <div>Loading...</div>
+  if (!person) return <h1>Loading...</h1>
 
-  const panel = role === "admin" ? <Admin user={user} /> : <User user={user} />
+  const panel = person.role === "admin" ? <Admin user={person} /> : <User user={person} />
 
   return (
     <div>
       <div className="topBar">
-        <h2>Welcome, {name[0]} {name[1] || user.email}!</h2>
+        <h2>Welcome, {person.firstName && person.lastName ? `${person.firstName} ${person.lastName}` : person.email}!</h2>
         <button onClick={onLogout}>Logout</button>
       </div>
-      {panel}
+      <div className="dashboardContent">
+        {panel}
+      </div>
     </div>
   )
 }

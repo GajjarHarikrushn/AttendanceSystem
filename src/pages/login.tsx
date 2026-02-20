@@ -7,9 +7,6 @@ import { ref, set } from "firebase/database";
 import { auth, db } from "../firebase";
 import "./login.css";
 
-/* ------------------------
-   Helper Function (Logic)
--------------------------*/
 function buildUserData(
   email: string,
   firstName: string,
@@ -24,9 +21,6 @@ function buildUserData(
   };
 }
 
-/* ------------------------
-   Login Component
--------------------------*/
 function Login() {
   const [isSignup, setIsSignup] = useState(false);
 
