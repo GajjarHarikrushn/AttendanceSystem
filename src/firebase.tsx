@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth/web-extension";
-import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { get, getDatabase, ref, remove, update } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -54,14 +54,29 @@ export function getData({user}: any) {
   }
 }
 
-export function deleteUser(user: any, uid: string) {
+export async function deleteUserData(user: any, uid: string) {
   if(user.role === "admin") {
     get(ref(db, `users/${user.uid}`)).then((snapshot) => {
       if (snapshot.exists()) {
-        return remove(ref(db, `users/${uid}`));
+        remove(ref(db, `users/${uid}`));
       }
     }).catch((error) => {
       console.error("Error deleting user:", error);
+      return Promise.reject(error);
     });
+  }
+}
+
+export async function editUserData(user: any, uid: string, updates: { [key: string]: any }) {
+  if(user.role === "admin") {
+    try {
+      const userRef = ref(db, `users/${uid}`);
+
+      await update(userRef, updates);
+    } catch (error) {
+      console.error(`Error updating user data for UID ${uid}:`, error);
+    }
+  } else {
+    alert("You do not have permission to edit user data.");
   }
 }

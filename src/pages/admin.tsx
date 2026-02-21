@@ -2,25 +2,33 @@ import Profile from "./dashContent/profile"
 import Settings from "./dashContent/settings"
 import Database from "./dashContent/database"
 import Reports from "./dashContent/reports"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import "./userAdmin.css"
 
-import "./admin.css"
-import { use, useState } from "react";
-
-export default function Admin({user}: any) {
-    const [tab, setTab] = useState("dashboard");
+export default function Admin({ user, onLogout }: { user: any; onLogout: () => void }) {
+    const navigate = useNavigate();
 
     return (
-        <div className="admin">
-            <div className="sidebar">
-                <p onClick={() => setTab("dashboard")}>Dashboard</p>
-                <p onClick={() => setTab("database")}>Database</p>
-                <p onClick={() => setTab("reports")}>Reports</p>
-                <p onClick={() => setTab("settings")}>Settings</p>
+        <>
+            <div className="topBar">
+                <h2>Welcome, {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}!</h2>
+                <button onClick={onLogout}>Logout</button>
             </div>
-            {tab === "dashboard" && <Profile user={{...user}} />}
-            {tab === "database" && <Database user={{...user}} />}
-            {tab === "reports" && <Reports user={{...user}} />}
-            {tab === "settings" && <Settings user={{...user}} />}
-        </div>
+            <div className="user">
+                <div className="sidebar">
+                    <p onClick={() => navigate("/admin/profile")}>Profile</p>
+                    <p onClick={() => navigate("/admin/database")}>Database</p>
+                    <p onClick={() => navigate("/admin/reports")}>Reports</p>
+                    <p onClick={() => navigate("/admin/settings")}>Settings</p>
+                </div>
+                <Routes>
+                    <Route index element={<Profile user={user} />} />
+                    <Route path="profile" element={<Profile user={user} />} />
+                    <Route path="database" element={<Database user={user} />} />
+                    <Route path="reports" element={<Reports user={user} />} />
+                    <Route path="settings" element={<Settings user={user} />} />
+                </Routes>
+            </div>
+        </>
     )
 }
