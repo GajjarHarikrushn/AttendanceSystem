@@ -55,28 +55,22 @@ export function getData({user}: any) {
 }
 
 export async function deleteUserData(user: any, uid: string) {
-  if(user.role === "admin") {
-    get(ref(db, `users/${user.uid}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        remove(ref(db, `users/${uid}`));
-      }
-    }).catch((error) => {
-      console.error("Error deleting user:", error);
-      return Promise.reject(error);
-    });
+  if (user.role !== "admin") {
+    throw new Error("Not authorized");
   }
+
+  const snapshot = await get(ref(db, `users/${uid}`));
+
+  if (!snapshot.exists()) {
+    throw new Error("user not found");
+  }
+
+  await remove(ref(db, `users/${uid}`));
 }
 
 export async function editUserData(user: any, uid: string, updates: { [key: string]: any }) {
-  if(user.role === "admin") {
-    try {
-      const userRef = ref(db, `users/${uid}`);
-
-      await update(userRef, updates);
-    } catch (error) {
-      console.error(`Error updating user data for UID ${uid}:`, error);
-    }
-  } else {
-    alert("You do not have permission to edit user data.");
+  if (user.role !== "admin") {
+    throw new Error("Not authorized");
   }
+  await update(ref(db, `users/${uid}`), updates);
 }

@@ -1,7 +1,6 @@
 import "./database.css";
 import { getData, deleteUserData, editUserData } from "../../firebase";
 import { useCallback, useEffect, useState } from "react";
-import { set } from "firebase/database";
 
 export default function Database({ user }: any) {
     const [data, setData] = useState<any>(null);

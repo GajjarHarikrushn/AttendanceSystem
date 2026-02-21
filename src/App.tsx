@@ -2,33 +2,37 @@ import { useEffect, useState } from "react"
 import { auth, db } from "./firebase"
 import { get, ref } from "firebase/database"
 import { onAuthStateChanged, signOut } from "firebase/auth"
-import { Route, Routes, useNavigate, Navigate } from "react-router"
+import { Route, Routes, Navigate } from "react-router-dom"
 import Login from "./pages/login"
 import User from "./pages/user"
 import Admin from "./pages/admin"
 
 export default function App() {
-  const [user, setUser] = useState(auth.currentUser)
+  const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [person, setPerson] = useState<any>(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser)
-      setLoading(false)
-
-      if (!firebaseUser) return
+      if (!firebaseUser) {
+        setUser(null)
+        setLoading(false)
+        return
+      }
 
       const snapshot = await get(ref(db, `users/${firebaseUser.uid}`))
       const data = snapshot.val()
-      setPerson(data)
+
+      setUser({
+        ...firebaseUser,
+        ...data
+      })
+      setLoading(false)
     })
 
     return () => unsubscribe()
-  }, [navigate])
+  }, [])
 
-  if (loading || (user && !person)) {
+  if (loading) {
     return <p>Loading...</p>
   }
 
@@ -38,21 +42,35 @@ export default function App() {
         <Route path="*" element={<Login />} />
       )}
 
-      {user && person?.role === "admin" && (
+      {user && user?.role === "admin" && (
         <>
-          <Route path="/admin/*" element={
-            <Admin user={person} onLogout={() => { signOut(auth); navigate("/"); }} />} />
+          <Route
+            path="/admin/*"
+            element={
+              <Admin
+                user={user}
+                onLogout={() => signOut(auth)}
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/admin" />} />
         </>
       )}
 
-      {user && person?.role === "user" && (
+      {user && user?.role === "user" && (
         <>
-          <Route path="/user/*" element={
-            <User user={person} onLogout={() => { signOut(auth); navigate("/"); }} />} />
+          <Route
+            path="/user/*"
+            element={
+              <User
+                user={user}
+                onLogout={() => signOut(auth)}
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/user" />} />
         </>
       )}
     </Routes>
-  );
+  )
 }
