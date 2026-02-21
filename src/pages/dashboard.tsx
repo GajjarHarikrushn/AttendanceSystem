@@ -6,7 +6,6 @@ import { db } from "../firebase"
 import "./dashboard.css"
 
 function Dashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
-
   const [person, setPerson] = useState<any>(null) // person will contain firstName, lastName, email, role
 
   useEffect(() => {
@@ -22,7 +21,7 @@ function Dashboard({ user, onLogout }: { user: any; onLogout: () => void }) {
 
   if (!person) return <h1>Loading...</h1>
 
-  const panel = person.role === "admin" ? <Admin user={person} /> : <User user={person} />
+  const panel = person.role === "admin" ? <Admin user={{...person, uid: user.uid}} /> : <User user={{...person, uid: user.uid}} />
 
   return (
     <div>

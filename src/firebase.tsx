@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth/web-extension";
-import { getDatabase } from "firebase/database";
+import { child, get, getDatabase, ref, remove } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,3 +25,43 @@ const db = getDatabase(app);
 export { db };
 export { auth };
 export { app };
+
+export function getData({user}: any) {
+  if(user.role === "admin") {
+    const data = get(ref(db, `users`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return data;
+  }
+  else {
+    const data = get(ref(db, `users/${user.uid}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return data;
+  }
+}
+
+export function deleteUser(user: any, uid: string) {
+  if(user.role === "admin") {
+    get(ref(db, `users/${user.uid}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        return remove(ref(db, `users/${uid}`));
+      }
+    }).catch((error) => {
+      console.error("Error deleting user:", error);
+    });
+  }
+}
