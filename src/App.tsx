@@ -9,7 +9,7 @@ import Admin from "./pages/admin"
 
 export default function App() {
   const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -20,7 +20,7 @@ export default function App() {
       }
 
       const snapshot = await get(ref(db, `users/${firebaseUser.uid}`))
-      const data = snapshot.val()
+      const data = snapshot.val() || {}
 
       setUser({
         ...firebaseUser,
@@ -30,7 +30,7 @@ export default function App() {
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [user])
 
   if (loading) {
     return <p>Loading...</p>

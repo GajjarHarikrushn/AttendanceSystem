@@ -1,9 +1,9 @@
-import "./database.css";
+import "./dataReport.css";
 import { getData, deleteUserData, editUserData } from "../../firebase";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Database({ user }: any) {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<any>({});
     const [editingUser, setEditingUser] = useState<string>("");
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export default function Database({ user }: any) {
     }, []);
 
     return (
-        <div className="database">
+        <div className="dataReport-container">
             <h2>Database</h2>
 
             {user.role === "admin" && data && (
