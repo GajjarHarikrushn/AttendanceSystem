@@ -27,7 +27,7 @@
 .sidebar {
     width: 250px;
     height: 100%;
-    color: white
+    color: var(--text-color);
 }
 
 .sidebar p {
@@ -37,5 +37,6 @@
 }
 
 .sidebar p:hover {
-    background: black;
+    background: var(--button-hover-color);
+    color: var(--button-text-hover-color);
 }
