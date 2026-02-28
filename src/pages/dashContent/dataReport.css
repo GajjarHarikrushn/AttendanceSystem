@@ -76,10 +76,14 @@ tbody tr:hover {
 
 .delete-btn {
   background: #dc2626;
+  color: white;
+  border: none;
 }
 
 .edit-btn {
   background: #2563eb;
+  color: white;
+  border: none;
 }
 
 .overlay {
@@ -116,19 +120,6 @@ tbody tr:hover {
   align-items: center;
 }
 
-.form-group button[type="submit"] {
-  background: #2563eb;
-}
-
-.form-group button[type="submit"]:hover {
-  background: #4338ca;
-}
-
 .form-header button:hover {
   background: #dc2626;
-}
-
-.table-container button {
-  background: white;
-  color: black;
 }

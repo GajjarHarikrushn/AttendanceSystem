@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getData } from "../../firebase"
+import { getData, takeAttendance } from "../../firebase"
 
 export default function Reports({ user }: any) {
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -20,7 +20,9 @@ export default function Reports({ user }: any) {
         )
     }, [user])
 
-    function submitReport() {}
+    function submitReport() {
+        takeAttendance(user, selectedIds);
+    }
     
     function selectAll() {
         if(select === "Select All") {

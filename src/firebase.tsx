@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth/web-extension";
-import { get, getDatabase, ref, remove, update } from "firebase/database";
+import { get, getDatabase, ref, remove, update, set } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -73,4 +73,20 @@ export async function editUserData(user: any, uid: string, updates: { [key: stri
     throw new Error("Not authorized");
   }
   await update(ref(db, `users/${uid}`), updates);
+}
+
+export async function takeAttendance(user: any, users: { [uid: string]: any}) {
+  if (user.role === "admin") {
+    try {
+      const date = new Date();
+      date.setUTCHours(0,0,0,0);
+      const reportRef = ref(db, 'report/' + date.getTime());
+      await set(reportRef, {
+        timestamp: Date.now(),
+        attendance: {...users}
+      })
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
 }
