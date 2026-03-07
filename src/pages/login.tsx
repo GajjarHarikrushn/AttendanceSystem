@@ -63,74 +63,145 @@ function Login() {
   };
 
   return (
-    <div className="login">
-      <h2>{isSignup ? "Sign Up" : "Login"}</h2>
-
-      <form
-        onSubmit={isSignup ? handleSignup : handleLogin}
-        className="form"
-      >
-        {isSignup && (
-          <>
-            <div>
-              <label>First Name:</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label>Last Name:</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-              />
-            </div>
-          </>
-        )}
-
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button type="submit">
-          {isSignup ? "Create Account" : "Login"}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setIsSignup(!isSignup)}
+    <div className="login-container">
+      <div className="card">
+        <h1>{isSignup ? "Sign Up" : "Login"}</h1>
+        <form
+          onSubmit={isSignup ? handleSignup : handleLogin}
+          className="form"
         >
-          {isSignup
-            ? "Already have an account? Login"
-            : "Need an account? Sign Up"}
-        </button>
-      </form>
+          {isSignup && (
+            <>
+              <div>
+                <label>First Name:</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label>Last Name:</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          )}
+
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <button type="submit">
+            {isSignup ? "Create Account" : "Login"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsSignup(!isSignup)}
+          >
+            {isSignup
+              ? "Already have an account? Login"
+              : "Need an account? Sign Up"}
+          </button>
+        </form>
+      </div>
     </div>
   );
+
+  // return (
+  //   <div className="login">
+  //     <h2>{isSignup ? "Sign Up" : "Login"}</h2>
+
+  //     <form
+  //       onSubmit={isSignup ? handleSignup : handleLogin}
+  //       className="form"
+  //     >
+  //       {isSignup && (
+  //         <>
+  //           <div>
+  //             <label>First Name:</label>
+  //             <input
+  //               type="text"
+  //               value={firstName}
+  //               onChange={(e) => setFirstName(e.target.value)}
+  //               required
+  //             />
+  //           </div>
+
+  //           <div>
+  //             <label>Last Name:</label>
+  //             <input
+  //               type="text"
+  //               value={lastName}
+  //               onChange={(e) => setLastName(e.target.value)}
+  //               required
+  //             />
+  //           </div>
+  //         </>
+  //       )}
+
+  //       <div>
+  //         <label>Email:</label>
+  //         <input
+  //           type="email"
+  //           value={email}
+  //           onChange={(e) => setEmail(e.target.value)}
+  //           required
+  //         />
+  //       </div>
+
+  //       <div>
+  //         <label>Password:</label>
+  //         <input
+  //           type="password"
+  //           value={password}
+  //           onChange={(e) => setPassword(e.target.value)}
+  //           required
+  //         />
+  //       </div>
+
+  //       {error && <p style={{ color: "red" }}>{error}</p>}
+
+  //       <button type="submit">
+  //         {isSignup ? "Create Account" : "Login"}
+  //       </button>
+
+  //       <button
+  //         type="button"
+  //         onClick={() => setIsSignup(!isSignup)}
+  //       >
+  //         {isSignup
+  //           ? "Already have an account? Login"
+  //           : "Need an account? Sign Up"}
+  //       </button>
+  //     </form>
+  //   </div>
+  // );
 }
 
 export default Login;
